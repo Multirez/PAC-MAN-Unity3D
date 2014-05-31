@@ -8,8 +8,11 @@ public class Engine : MonoBehaviour{
 		public Tile tile=null;
 		public Trigger trigger=null;
 	}
-	public Ceil[,] ceils;
 
+	private Vector3 inputDirGUI=Vector3.zero;
+
+	public Ceil[,] ceils;
+	//inspector vars
 	public int levelWidth=10;
 	public int levelHeight=10;
 
@@ -21,6 +24,19 @@ public class Engine : MonoBehaviour{
 		for(int x=0; x<levelWidth; x++)
 			for(int z=0; z<levelHeight; z++)
 				ceils[x,z]=new Ceil();
+	}
+	
+	private void Update(){
+		Vector3 inputDir=Vector3.zero;
+		if(Input.anyKey){
+			inputDir=new Vector3(Input.GetAxis("Horizontal"),
+			                     0f,
+			                     Input.GetAxis("Vertical"));
+		}
+		//try to move player
+		inputDir+=inputDirGUI;
+		if(inputDir!=Vector3.zero)
+			Player.instance.TryMove(inputDir+inputDirGUI);
 	}
 
 	private void OnDrawGizmos(){

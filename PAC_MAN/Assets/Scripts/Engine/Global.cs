@@ -11,6 +11,7 @@ public class Global : MonoBehaviour {
 		return null;
 	}
 
+	//inspector vars
 	public float pacmanSpeed=1f; 
-	public float enemySpeed=0.9f;
+	public float unitSpeed=0.9f;
 }
