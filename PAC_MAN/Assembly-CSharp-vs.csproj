@@ -49,7 +49,9 @@
      <Compile Include="Assets\Scripts\Engine\CameraController.cs" />
      <Compile Include="Assets\Scripts\Engine\Engine.cs" />
      <Compile Include="Assets\Scripts\Engine\Global.cs" />
+     <Compile Include="Assets\Scripts\GO\Player.cs" />
      <Compile Include="Assets\Scripts\GO\Tile.cs" />
+     <Compile Include="Assets\Scripts\GO\Unit.cs" />
      <Compile Include="Assets\Scripts\Triggers\Trigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

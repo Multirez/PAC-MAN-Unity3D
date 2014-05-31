@@ -18,7 +18,9 @@ public class Engine : MonoBehaviour{
 		instance=this;
 		//---- initialize ceils
 		ceils=new Ceil[levelWidth,levelHeight];
-		ceils.Initialize();
+		for(int x=0; x<levelWidth; x++)
+			for(int z=0; z<levelHeight; z++)
+				ceils[x,z]=new Ceil();
 	}
 
 	private void OnDrawGizmos(){
