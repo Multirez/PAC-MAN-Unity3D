@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour{
 
 	//inspector vars
 	public float speedCoef=1f;//speed coefficient for current unit
+	public float power=1f;//on player collision unit with lowest power will be eaten
 	
 	protected virtual void Start(){
 		Vector3 pos=transform.position;
@@ -41,6 +42,19 @@ public class Unit : MonoBehaviour{
 	protected virtual void UpdateMoveDirection(){
 		//AI must be here
 		AIRandom(this);
+	}
+	#endregion
+
+	#region Attack
+	public virtual void EatUnit(Unit targetUnit){
+		targetUnit.EatMe();
+	}
+	private void RemoveFromArrays(){
+
+	}
+	protected virtual void EatMe(){
+		RemoveFromArrays();
+		collider.enabled=false;
 	}
 	#endregion
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System;
 using System.Collections;
 
 public class Engine : MonoBehaviour{
@@ -59,6 +60,7 @@ public class Engine : MonoBehaviour{
 	//inspector vars
 	public int levelWidth=10;
 	public int levelHeight=10;
+	public int pacmanLifes=2;
 
 	#region Standart Functions
 	private void Awake(){
@@ -96,4 +98,28 @@ public class Engine : MonoBehaviour{
 	#endregion
 
 
+	public void OnPlayerDeath(){
+		if(pacmanLifes>0){
+			pacmanLifes--;
+			StartCoroutine("RestorePlayerAfterDeath");
+		}else
+			StartCoroutine("ShowGameOver");
+	}
+	private IEnumerator RestorePlayerAfterDeath(){
+		//gradually slow down time
+		while(Time.timeScale>0.3f){
+			Time.timeScale*=0.95f;
+			yield return new WaitForSeconds(0.05f*Time.timeScale);
+		}
+		Time.timeScale=1f;
+		Player.instance.RestoreAfterDeath();
+	}
+	private IEnumerator ShowGameOver(){
+		//gradually slow down time
+		while(Time.timeScale>0.3f){
+			Time.timeScale*=0.95f;
+			yield return new WaitForSeconds(0.05f*Time.timeScale);
+		}
+		Application.LoadLevel("LevelScores");
+	}
 }

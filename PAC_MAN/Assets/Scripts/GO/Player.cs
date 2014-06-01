@@ -4,14 +4,16 @@ using System.Collections;
 
 public class Player : Unit{
 	public static Player instance;
-	
+
 	private Vector3 targetDir;//result direction from inputs
+	private Vector3 startPos;
 
 	private void Awake(){
 		instance=this;
 	}
 	protected override void Start(){
-		base.Start ();		
+		base.Start();
+		startPos=lastPos;//save start position for restore after death
 		targetDir=Vector3.zero;
 		targetPos=lastPos;
 		speed=Global.instance.pacmanSpeed*speedCoef;
@@ -72,6 +74,33 @@ public class Player : Unit{
 			return new Vector3(0f, 0f, Math.Sign(direction.z));
 		else
 			return new Vector3(Math.Sign(direction.x), 0f, 0f);
+	}
+	#endregion
+
+	#region Attack
+	void OnCollisionEnter(Collision collision){
+		print("New collision detect!");
+		Unit unit=collision.gameObject.GetComponent<Unit>();
+		if(unit){
+			if(unit.power<this.power){
+				EatUnit(unit);
+			}else{
+				unit.EatUnit(this);
+			}
+		}
+	}
+	protected override void EatMe(){
+		//show all animations but don't remove from arrays
+		collider.enabled=false;
+		Engine.instance.OnPlayerDeath();
+	}	
+	public void RestoreAfterDeath(){
+		transform.position=startPos;
+		collider.enabled=true;
+		lastPos=startPos;
+		targetPos=startPos;
+		targetDir=Vector3.zero;
+		speed=Global.instance.pacmanSpeed*speedCoef;
 	}
 	#endregion
 }
