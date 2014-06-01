@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Player : Unit{
@@ -12,6 +13,8 @@ public class Player : Unit{
 	protected override void Start(){
 		base.Start ();		
 		targetDir=Vector3.zero;
+		targetPos=lastPos;
+		speed=Global.instance.pacmanSpeed*speedCoef;
 	}
 
 	#region Move
@@ -45,19 +48,19 @@ public class Player : Unit{
 		//check is can change direction
 		if(targetCeil.tile==null){//the way is free
 			targetPos=newTargetPos;
-			lastPos=pos;			
-			print("New direction approved "+GetRoundedDir(targetDir));
+			lastPos=pos;
 			return;
 		}
 
 		//check is can continue to move
-		newTargetPos=pos+(targetPos-lastPos);
-		targetCeil=Engine.instance.ceils[(int)newTargetPos.x, (int)newTargetPos.z];
-		if(targetCeil.tile==null){//the way is free
-			targetPos=newTargetPos;
-			lastPos=pos;
-			print("Old direction approved");
-			return;
+		if(targetPos!=lastPos){
+			newTargetPos=pos+(targetPos-lastPos);
+			targetCeil=Engine.instance.ceils[(int)newTargetPos.x, (int)newTargetPos.z];
+			if(targetCeil.tile==null){//the way is free
+				targetPos=newTargetPos;
+				lastPos=pos;
+				return;
+			}
 		}
 
 		//no way - stay here
@@ -65,11 +68,10 @@ public class Player : Unit{
 	}	
 	
 	private Vector3 GetRoundedDir(Vector3 direction){
-		print(direction);
 		if(Mathf.Abs(direction.x)<Mathf.Abs(direction.z))
-			return new Vector3(0f, 0f, Mathf.Sign(direction.z));
+			return new Vector3(0f, 0f, Math.Sign(direction.z));
 		else
-			return new Vector3(Mathf.Sign(direction.x), 0f, 0f);
+			return new Vector3(Math.Sign(direction.x), 0f, 0f);
 	}
 	#endregion
 }

@@ -12,6 +12,7 @@ public class Global : MonoBehaviour {
 	}
 
 	//inspector vars
+	public int targetFramerate=100;
 	public float pacmanSpeed=1f; 
 	public float unitSpeed=0.9f;
 }
